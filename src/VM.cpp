@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iostream>
 
+#define COMMENT_CHAR ';'
+
 VM::VM(const std::string& progPath) {
     std::ifstream file(progPath);
     int instCount = 0;
@@ -13,6 +15,7 @@ VM::VM(const std::string& progPath) {
             uint8_t inst = 0;
             int bit = 8;
             for(char c : line) {
+                if(c == COMMENT_CHAR) break;
                 if(bit > 0 && (c == '1' || c == '0')) {
                     --bit;
                     if(c == '1') {
