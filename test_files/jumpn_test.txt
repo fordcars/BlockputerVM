@@ -1,0 +1,10 @@
+0111 0100 # Set ACC to 4
+0001 0111 # Set INSTA to 4
+0111 0101 # Set ACC to 5
+0001 0001 # Set R1 to 5
+0000 0010 # Move R2 to ACC
+1100 1001 # Increment ACC
+0001 0010 # Move ACC to R2
+1101 0001 # ACC = ACC - R1
+0100 0000 # Jump to INSTA if ACC is negative
+0111 1111 # Set ACC to 15 to signify done!
