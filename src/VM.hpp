@@ -6,7 +6,7 @@
 #define GPR_COUNT 6
 #define SPECIAL_GPR_COUNT 2  // MEMA + INSTA
 
-enum class OP_CODE : uint8_t {
+enum class OpCode : uint8_t {
     MVRA  = 0b0000,
     MVAR  = 0b0001,
     LDA   = 0b0011,
@@ -25,7 +25,7 @@ enum class OP_CODE : uint8_t {
     XOR   = 0b1000
 };
 
-enum class SPECIAL_REG : uint8_t {
+enum class SpecialReg : uint8_t {
     MEMA  = 0b0110,
     INSTA = 0b0111,
     ZERO  = 0b1000,

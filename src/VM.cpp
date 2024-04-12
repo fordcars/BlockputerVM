@@ -56,70 +56,70 @@ void VM::executeInstruction() {
     mIR = mROM[mPC];
     ++mPC;
 
-    OP_CODE op = static_cast<OP_CODE>((mIR & 0xF0) >> 4);
+    OpCode op = static_cast<OpCode>((mIR & 0xF0) >> 4);
     uint8_t operand = mIR & 0x0F;
 
     switch(op) {
-        case OP_CODE::MVRA:
+        case OpCode::MVRA:
             mACC = getRegister(operand);
             break;
-        case OP_CODE::MVAR:
-            if(operand != static_cast<uint8_t>(SPECIAL_REG::ZERO) &&
-                operand != static_cast<uint8_t>(SPECIAL_REG::ONE) &&
-                operand != static_cast<uint8_t>(SPECIAL_REG::MIN1)) {
+        case OpCode::MVAR:
+            if(operand != static_cast<uint8_t>(SpecialReg::ZERO) &&
+                operand != static_cast<uint8_t>(SpecialReg::ONE) &&
+                operand != static_cast<uint8_t>(SpecialReg::MIN1)) {
                     getRegister(operand) = mACC;
                 } else {
                     std::cout << "Warning: attempting to modify constant register"
                         << std::endl;
                 }
             break;
-        case OP_CODE::LDA:
-            mACC = mRAM[getRegister(static_cast<uint8_t>(SPECIAL_REG::MEMA))];
+        case OpCode::LDA:
+            mACC = mRAM[getRegister(static_cast<uint8_t>(SpecialReg::MEMA))];
             break;
-        case OP_CODE::STA:
-            mRAM[getRegister(static_cast<uint8_t>(SPECIAL_REG::MEMA))] = mACC;
+        case OpCode::STA:
+            mRAM[getRegister(static_cast<uint8_t>(SpecialReg::MEMA))] = mACC;
             break;
-        case OP_CODE::MVAH:
+        case OpCode::MVAH:
             mACC &= 0x0F;
             mACC |= operand << 4;
             break;
-        case OP_CODE::MVAL:
+        case OpCode::MVAL:
             mACC &= 0xF0;
             mACC |= 0x0F & operand;
             break;
-        case OP_CODE::JUMPZ:
+        case OpCode::JUMPZ:
             if(mACC == 0) {
-                mPC = getRegister(static_cast<uint8_t>(SPECIAL_REG::INSTA));
+                mPC = getRegister(static_cast<uint8_t>(SpecialReg::INSTA));
             }
             break;
-        case OP_CODE::JUMPN:
+        case OpCode::JUMPN:
             if(mACC & 0x80) {
                 std::cout << "JUMP" << std::endl;
-                mPC = getRegister(static_cast<uint8_t>(SPECIAL_REG::INSTA));
+                mPC = getRegister(static_cast<uint8_t>(SpecialReg::INSTA));
             } else { std::cout << "NO JUMP" << std::endl;}
             break;
-        case OP_CODE::ADD:
+        case OpCode::ADD:
             mACC += getRegister(operand);
             break;
-        case OP_CODE::SUB:
+        case OpCode::SUB:
             mACC -= getRegister(operand);
             break;
-        case OP_CODE::MUL:
+        case OpCode::MUL:
             mACC *= getRegister(operand);
             break;
-        case OP_CODE::LLS:
+        case OpCode::LLS:
             mACC <<= (getRegister(operand) & 0b111);
             break;
-        case OP_CODE::LRS:
+        case OpCode::LRS:
             mACC >>= (getRegister(operand) & 0b111);
             break;
-        case OP_CODE::AND:
+        case OpCode::AND:
             mACC &= getRegister(operand);
             break;
-        case OP_CODE::OR:
+        case OpCode::OR:
             mACC |= getRegister(operand);
             break;
-        case OP_CODE::XOR:
+        case OpCode::XOR:
             mACC ^= getRegister(operand);
             break;
         default:
@@ -133,13 +133,13 @@ uint8_t& VM::getRegister(uint8_t id) {
         return mGPRs[id];
     }
 
-    SPECIAL_REG reg = static_cast<SPECIAL_REG>(id);
+    SpecialReg reg = static_cast<SpecialReg>(id);
     switch(reg) {
-        case SPECIAL_REG::ZERO:
+        case SpecialReg::ZERO:
             return mZERO;
-        case SPECIAL_REG::ONE:
+        case SpecialReg::ONE:
             return mONE;
-        case SPECIAL_REG::MIN1:
+        case SpecialReg::MIN1:
             return mMIN1;
         default:
             std::cerr << "Invalid register 0x" << std::hex << int(id) << std::endl;
