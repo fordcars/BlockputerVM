@@ -3,8 +3,8 @@
 
 #define ROM_SIZE 256
 #define RAM_SIZE 256
-#define GPR_COUNT 6
-#define SPECIAL_GPR_COUNT 2  // MEMA + INSTA
+#define GPR_COUNT 9
+#define SPECIAL_REG_COUNT 7
 
 enum class OpCode : uint8_t {
     MVRA  = 0b0000,
@@ -26,13 +26,13 @@ enum class OpCode : uint8_t {
 };
 
 enum class SpecialReg : uint8_t {
-    MEMA  = 0b0110,
-    INSTA = 0b0111,
-    ZERO  = 0b1000,
-    ONE   = 0b1001,
-    MIN1  = 0b1010,
-    IR    = 0b1011,
-    PC    = 0b1100
+    OUT   = 0b1001,
+    IN    = 0b1010,
+    MEMA  = 0b1011,
+    INSTA = 0b1100,
+    ZERO  = 0b1101,
+    ONE   = 0b1110,
+    MIN1  = 0b1111,
 };
 
 class VM {
@@ -46,10 +46,7 @@ private:
     uint8_t mRAM[RAM_SIZE] {};
 
     // Registers
-    uint8_t mGPRs[GPR_COUNT + SPECIAL_GPR_COUNT] {};
-    uint8_t mZERO = 0; // Should be constant
-    uint8_t mONE  = 1; // Should be constant
-    uint8_t mMIN1 = 255;
+    uint8_t mREGs[GPR_COUNT + SPECIAL_REG_COUNT] {};
     uint8_t mIR   = 0;
     uint8_t mPC   = 0;
     uint8_t mACC  = 0;

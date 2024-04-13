@@ -33,6 +33,11 @@ VM::VM(const std::string& progPath) {
     }
 
     mInstCount = instCount;
+
+    // Setup special registers
+    mREGs[static_cast<uint8_t>(SpecialReg::ZERO)] = 0;
+    mREGs[static_cast<uint8_t>(SpecialReg::ONE)]  = 1;
+    mREGs[static_cast<uint8_t>(SpecialReg::MIN1)] = 255;
 }
 
 void VM::run(bool printDecimal, bool dumpMem) {
@@ -51,11 +56,12 @@ void VM::run(bool printDecimal, bool dumpMem) {
     std::cout << std::setfill('0');
 
     for(int i = 0; i < GPR_COUNT; ++i) {
-        std::cout << "R" << i << ": " << *numFormat << std::setw(valueWidth) << int(mGPRs[i]) << "\n";
+        std::cout << "R" << i << ": " << *numFormat << std::setw(valueWidth) << int(mREGs[i]) << "\n";
     }
 
-    std::cout << "MEMA: " << *numFormat << std::setw(valueWidth) << int(mGPRs[GPR_COUNT]) << "\n";
-    std::cout << "INSTA: " << std::setw(valueWidth) << int(mGPRs[GPR_COUNT + 1]) << "\n";
+    std::cout << "OUT: " << *numFormat << std::setw(valueWidth) << int(mREGs[static_cast<uint8_t>(SpecialReg::OUT)]) << "\n";
+    std::cout << "MEMA: " << *numFormat << std::setw(valueWidth) << int(mREGs[static_cast<uint8_t>(SpecialReg::MEMA)]) << "\n";
+    std::cout << "INSTA: " << std::setw(valueWidth) << int(mREGs[static_cast<uint8_t>(SpecialReg::INSTA)]) << "\n";
     std::cout << "IR: " << std::setw(valueWidth) << int(mIR) << "\n";
     std::cout << "PC: " << std::setw(valueWidth) << int(mPC) << "\n";
     std::cout << "ACC: " << std::setw(valueWidth)  << int(mACC) << "\n";
@@ -148,20 +154,11 @@ void VM::executeInstruction() {
 }
 
 uint8_t& VM::getRegister(uint8_t id) {
-    if(id < GPR_COUNT + SPECIAL_GPR_COUNT) {
-        return mGPRs[id];
+    if(id < GPR_COUNT + SPECIAL_REG_COUNT) {
+        return mREGs[id];
     }
 
-    SpecialReg reg = static_cast<SpecialReg>(id);
-    switch(reg) {
-        case SpecialReg::ZERO:
-            return mZERO;
-        case SpecialReg::ONE:
-            return mONE;
-        case SpecialReg::MIN1:
-            return mMIN1;
-        default:
-            std::cerr << "Invalid register 0x" << std::hex << int(id) << std::endl;
-            return mZERO;
-    }
+    std::cerr << "Invalid register 0x" << std::hex << static_cast<int>(id)
+        << std::endl;
+    return mREGs[0];
 }
