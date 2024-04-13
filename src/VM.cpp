@@ -36,7 +36,9 @@ VM::VM(const std::string& progPath) {
 
 void VM::run() {
     std::cout << "Executing " << mInstCount << " instructions... " << std::endl;
-    while(mPC < mInstCount + 1) { // +1 in-case we have some jumps to the end
+    // In reality, we would go on until instruction 255, but it will yield
+    // the same result as the last instruction + 1.
+    while(mPC < mInstCount + 1) {
         executeInstruction();
     }
 
