@@ -1,6 +1,7 @@
 #include "VM.hpp"
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 
 #define COMMENT_CHAR ';'
 
@@ -34,7 +35,7 @@ VM::VM(const std::string& progPath) {
     mInstCount = instCount;
 }
 
-void VM::run() {
+void VM::run(bool dumpMem) {
     std::cout << "Executing " << mInstCount << " instructions... " << std::endl;
     // In reality, we would go on until instruction 255, but it will yield
     // the same result as the last instruction + 1.
@@ -44,15 +45,25 @@ void VM::run() {
 
     // Print GPRs
     std::cout << "Final register values: " << std::endl;
+    std::cout << std::setfill('0');
     for(int i = 0; i < GPR_COUNT; ++i) {
-        std::cout << "R" << i << ": 0x" << std::hex << int(mGPRs[i]) << "\n";
+        std::cout << "R" << i << ": 0x" << std::hex << std::setw(2) << int(mGPRs[i]) << "\n";
     }
 
-    std::cout << "MEMA: 0x" << std::hex << int(mGPRs[GPR_COUNT]) << "\n";
-    std::cout << "INSTA: 0x" << std::hex << int(mGPRs[GPR_COUNT + 1]) << "\n";
-    std::cout << "IR: 0x" << std::hex << int(mIR) << "\n";
-    std::cout << "PC: 0x" << std::hex << int(mPC) << "\n";
-    std::cout << "ACC: 0x" << std::hex << int(mACC) << "\n";
+    std::cout << "MEMA: 0x" << std::hex << std::setw(2) << int(mGPRs[GPR_COUNT]) << "\n";
+    std::cout << "INSTA: 0x" << std::setw(2) << int(mGPRs[GPR_COUNT + 1]) << "\n";
+    std::cout << "IR: 0x" << std::setw(2) << int(mIR) << "\n";
+    std::cout << "PC: 0x" << std::setw(2) << int(mPC) << "\n";
+    std::cout << "ACC: 0x" << std::setw(2)  << int(mACC) << "\n";
+
+    if(dumpMem) {
+        std::cout << "\nMemory dump:\n";
+        for(int i = 0; i < RAM_SIZE; ++i) {
+            std::cout << std::hex << std::setw(2) << int(mRAM[i]) << ' ';
+            if((i + 1) % 16 == 0) std::cout << '\n';
+        }
+        std::cout << '\n';
+    }
     std::cout << std::flush;
 }
 

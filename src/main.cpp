@@ -8,20 +8,25 @@ void printHelp(const std::string& progName) {
         << "Usage:\n"
         << "    " << progName << " OPTIONS\n"
         << "Options:\n"
-        << "    -i        input file"
+        << "    -i        input file\n"
+        << "    -m        dump memory after execution"
         << std::endl;
 }
 
 int main(int argc, char** argv) {
     int c;
     std::string progPath;
-    while((c = getopt(argc, argv, "hi:")) != -1) {
+    bool dumpMem = false;
+    while((c = getopt(argc, argv, "hi:m")) != -1) {
         switch(c) {
             case 'i':
             {
                 progPath = optarg;
                 break;
             }
+            case 'm':
+                dumpMem = true;
+                break;
             case '?':
             case 'h':
             default:
@@ -35,7 +40,7 @@ int main(int argc, char** argv) {
 
     if(!progPath.empty()) {
         VM vm(progPath);
-        vm.run();
+        vm.run(dumpMem);
     }
     
     return 0;
