@@ -35,7 +35,7 @@ VM::VM(const std::string& progPath) {
     mInstCount = instCount;
 }
 
-void VM::run(bool dumpMem) {
+void VM::run(bool printDecimal, bool dumpMem) {
     std::cout << "Executing " << mInstCount << " instructions... " << std::endl;
     // In reality, we would go on until instruction 255, but it will yield
     // the same result as the last instruction + 1.
@@ -44,22 +44,26 @@ void VM::run(bool dumpMem) {
     }
 
     // Print GPRs
+    auto* numFormat = printDecimal ? std::dec : std::hex;
+    int valueWidth  = printDecimal ? 3 : 2;
+
     std::cout << "Final register values: " << std::endl;
     std::cout << std::setfill('0');
+
     for(int i = 0; i < GPR_COUNT; ++i) {
-        std::cout << "R" << i << ": 0x" << std::hex << std::setw(2) << int(mGPRs[i]) << "\n";
+        std::cout << "R" << i << ": " << *numFormat << std::setw(valueWidth) << int(mGPRs[i]) << "\n";
     }
 
-    std::cout << "MEMA: 0x" << std::hex << std::setw(2) << int(mGPRs[GPR_COUNT]) << "\n";
-    std::cout << "INSTA: 0x" << std::setw(2) << int(mGPRs[GPR_COUNT + 1]) << "\n";
-    std::cout << "IR: 0x" << std::setw(2) << int(mIR) << "\n";
-    std::cout << "PC: 0x" << std::setw(2) << int(mPC) << "\n";
-    std::cout << "ACC: 0x" << std::setw(2)  << int(mACC) << "\n";
+    std::cout << "MEMA: " << *numFormat << std::setw(valueWidth) << int(mGPRs[GPR_COUNT]) << "\n";
+    std::cout << "INSTA: " << std::setw(valueWidth) << int(mGPRs[GPR_COUNT + 1]) << "\n";
+    std::cout << "IR: " << std::setw(valueWidth) << int(mIR) << "\n";
+    std::cout << "PC: " << std::setw(valueWidth) << int(mPC) << "\n";
+    std::cout << "ACC: " << std::setw(valueWidth)  << int(mACC) << "\n";
 
     if(dumpMem) {
         std::cout << "\nMemory dump:\n";
         for(int i = 0; i < RAM_SIZE; ++i) {
-            std::cout << std::hex << std::setw(2) << int(mRAM[i]) << ' ';
+            std::cout << *numFormat << std::setw(valueWidth) << int(mRAM[i]) << ' ';
             if((i + 1) % 16 == 0) std::cout << '\n';
         }
         std::cout << '\n';

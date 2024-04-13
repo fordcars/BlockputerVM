@@ -38,7 +38,7 @@ enum class SpecialReg : uint8_t {
 class VM {
 public:
     VM(const std::string& progPath);
-    void run(bool dumpMem);
+    void run(bool printDecimal, bool dumpMem);
 
 private:
     int mInstCount = 0;

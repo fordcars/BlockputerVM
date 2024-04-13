@@ -9,6 +9,7 @@ void printHelp(const std::string& progName) {
         << "    " << progName << " OPTIONS\n"
         << "Options:\n"
         << "    -i        input file\n"
+        << "    -d        print values as decimal (instead of hex)\n"
         << "    -m        dump memory after execution"
         << std::endl;
 }
@@ -17,13 +18,18 @@ int main(int argc, char** argv) {
     int c;
     std::string progPath;
     bool dumpMem = false;
-    while((c = getopt(argc, argv, "hi:m")) != -1) {
+    bool printDecimal = false;
+
+    while((c = getopt(argc, argv, "hi:dm")) != -1) {
         switch(c) {
             case 'i':
             {
                 progPath = optarg;
                 break;
             }
+            case 'd':
+                printDecimal = true;
+                break;
             case 'm':
                 dumpMem = true;
                 break;
@@ -40,7 +46,7 @@ int main(int argc, char** argv) {
 
     if(!progPath.empty()) {
         VM vm(progPath);
-        vm.run(dumpMem);
+        vm.run(printDecimal, dumpMem);
     }
     
     return 0;
