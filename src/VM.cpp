@@ -99,9 +99,8 @@ void VM::executeInstruction() {
             break;
         case OpCode::JUMPN:
             if(mACC & 0x80) {
-                std::cout << "JUMP" << std::endl;
                 mPC = getRegister(static_cast<uint8_t>(SpecialReg::INSTA));
-            } else { std::cout << "NO JUMP" << std::endl;}
+            }
             break;
         case OpCode::ADD:
             mACC += getRegister(operand);

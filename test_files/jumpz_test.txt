@@ -6,4 +6,4 @@
 1101 1001 ; Decrement ACC
 0001 0001 ; Move ACC to R1
 0101 0000 ; Jump to INSTA if ACC is zero
-0111 1111 ; Set ACC to 15 to signify done! R1 should be -1
+; R1 should be -1
