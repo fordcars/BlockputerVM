@@ -72,7 +72,6 @@ void VM::run(bool printDecimal, bool dumpMem) {
             std::cout << *numFormat << std::setw(valueWidth) << int(mRAM[i]) << ' ';
             if((i + 1) % 16 == 0) std::cout << '\n';
         }
-        std::cout << '\n';
     }
     std::cout << std::flush;
 }
@@ -90,7 +89,8 @@ void VM::executeInstruction() {
             mACC = getRegister(operand);
             break;
         case OpCode::MVAR:
-            if(operand != static_cast<uint8_t>(SpecialReg::ZERO) &&
+            if(operand != static_cast<uint8_t>(SpecialReg::IN) &&
+                operand != static_cast<uint8_t>(SpecialReg::ZERO) &&
                 operand != static_cast<uint8_t>(SpecialReg::ONE) &&
                 operand != static_cast<uint8_t>(SpecialReg::MIN1)) {
                     getRegister(operand) = mACC;
@@ -154,7 +154,13 @@ void VM::executeInstruction() {
 }
 
 uint8_t& VM::getRegister(uint8_t id) {
-    if(id < GPR_COUNT + SPECIAL_REG_COUNT) {
+    if(id == static_cast<uint8_t>(SpecialReg::IN)) {
+        // IN register, ask for user input
+        unsigned int value;
+        std::cout << "User input (dec): " << std::endl;
+        std::cin >> value;
+        return mREGs[static_cast<uint8_t>(SpecialReg::IN)] = static_cast<uint8_t>(value);
+    } else if(id < GPR_COUNT + SPECIAL_REG_COUNT) {
         return mREGs[id];
     }
 
