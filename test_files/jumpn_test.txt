@@ -3,8 +3,8 @@
 0111 0101 ; Set ACC to 5
 0001 0001 ; Set R1 to 5
 0000 0010 ; Move R2 to ACC
-1100 1001 ; Increment ACC
+1010 1001 ; Increment ACC
 0001 0010 ; Move ACC to R2
-1101 0001 ; ACC = ACC - R1
+1001 0001 ; ACC = ACC - R1
 0100 0000 ; Jump to INSTA if ACC is negative
 ; R2 should be 5

@@ -9,20 +9,20 @@
 enum class OpCode : uint8_t {
     MVRA  = 0b0000,
     MVAR  = 0b0001,
-    LDA   = 0b0011,
     STA   = 0b0010,
+    LDA   = 0b0011,
+    JUMPN = 0b0100,
+    JUMPZ = 0b0101,
     MVAH  = 0b0110,
     MVAL  = 0b0111,
-    JUMPZ = 0b0101,
-    JUMPN = 0b0100,
-    ADD   = 0b1100,
-    SUB   = 0b1101,
-    MUL   = 0b1111,
-    LLS   = 0b1110,
-    LRS   = 0b1010,
-    AND   = 0b1011,
-    OR    = 0b1001,
-    XOR   = 0b1000
+    MUL   = 0b1000,
+    SUB   = 0b1001,
+    ADD   = 0b1010,
+    LLS   = 0b1011,
+    LRS   = 0b1100,
+    AND   = 0b1101,
+    OR    = 0b1110,
+    XOR   = 0b1111
 };
 
 enum class SpecialReg : uint8_t {
@@ -32,7 +32,7 @@ enum class SpecialReg : uint8_t {
     INSTA = 0b1100,
     ZERO  = 0b1101,
     ONE   = 0b1110,
-    MIN1  = 0b1111,
+    MIN1  = 0b1111
 };
 
 class VM {

@@ -25,8 +25,10 @@ VM::VM(const std::string& progPath) {
                 }
             }
 
-            mROM[instCount] = inst;
-            ++instCount;
+            if(bit == 0) {
+                mROM[instCount] = inst;
+                ++instCount;
+            }
         }
     } else {
         std::cerr << "Unable to open file: " << progPath << std::endl;

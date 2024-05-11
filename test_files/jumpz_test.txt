@@ -3,7 +3,7 @@
 0111 0001 ; Set ACC to 1
 0001 0001 ; Set R1 to 1
 0000 0001 ; Move R1 to ACC
-1101 1001 ; Decrement ACC
+1001 1001 ; Decrement ACC
 0001 0001 ; Move ACC to R1
 0101 0000 ; Jump to INSTA if ACC is zero
 ; R1 should be -1
